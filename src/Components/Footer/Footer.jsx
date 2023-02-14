@@ -1,16 +1,39 @@
 import "./Footer.scss";
-
+import { FiMail } from "react-icons/fi";
+import { FaTwitter, FaFacebookSquare } from "react-icons/fa";
 function Footer() {
   return (
     <div className="footer">
       <div className="footer-top">
-        <div>Send an Email</div>
-        <div>Twitter</div>
-        <div>Facebook</div>
+        <div>
+          <p>
+            {" "}
+            <FiMail /> Send an Email
+          </p>
+          <span>info@wastenofood.org</span>
+        </div>
+        <div>
+          <p>
+            {" "}
+            <FaTwitter /> Twitter
+          </p>
+          <span>https://twitter.com/wastenofood</span>
+        </div>
+        <div>
+          <p>
+            {" "}
+            <FaFacebookSquare /> Facebook
+          </p>
+          <span>https://facebook.com/WasteNoFood</span>
+        </div>
       </div>
       <div className="footer-bottom">
-        <div>Waste No feed</div>
-        <div>Instagram feed</div>
+        <div>
+          <p> Waste No feed</p>
+        </div>
+        <div>
+          <p>Instagram feed</p>
+        </div>
         <div>
           <p>Quick Links</p>
           <ul>
@@ -22,6 +45,9 @@ function Footer() {
           </ul>
         </div>
       </div>
+      <p className="copyright">
+        Copyright © 2011, Waste No Food. All rights reserved.
+      </p>
     </div>
   );
 }
