@@ -1,0 +1,60 @@
+.home {
+    .intro {
+        padding: 50px 100px;
+        width: 40%;
+        text-align: left;
+
+        span {
+            background-color: #82318A;
+            color: white;
+            font-weight: 700;
+            padding: 5px 10px;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        h1 {}
+
+        p {}
+
+        button {
+            background-color: #1D76BA;
+            padding: 10px 25px;
+            border: none;
+            color: white;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    }
+
+    .how {
+        padding: 50px 100px;
+
+        h1 {
+            font-size: 32px;
+            color: #001334;
+        }
+
+        .three-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .description {
+                padding: 20px 40px;
+
+                h2 {}
+
+                p {}
+
+                &:hover {
+                    background-color: #3ABCB2 !important;
+                    color: white !important;
+                }
+            }
+        }
+    }
+}

@@ -1,9 +1,12 @@
 import "./Header.scss";
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <div className="header">
       <div className="upper-header">
-        <span className="heading">Diverting excess food to the hungry people since 2011</span>
+        <span className="heading">
+          Diverting excess food to the hungry people since 2011
+        </span>
         <ul>
           <li>
             <span>IOS App</span>
@@ -22,10 +25,16 @@ function Header() {
       <div className="lower-header">
         <ul>
           <li>About Us</li>
-          <li>Food Donors</li>
-          <li>Charities</li>
+          <li>
+            <Link to="/food-donors">Food Donors</Link>
+          </li>
+          <li>
+            <Link to="/charities">Charities</Link>
+          </li>
           <li>Volunteers</li>
-          <li>Admins</li>
+          <li>
+            <Link to="/admins">Admins</Link>
+          </li>
           <li>
             <button>DONATE MONEY</button>
           </li>
