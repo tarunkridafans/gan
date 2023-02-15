@@ -1,4 +1,52 @@
 .login {
     background-color: #F1F1F1;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        width: 92%;
+        background-color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+
+            span {
+                margin-bottom: 6px;
+                font-size: 16px;
+            }
+
+            input {
+                padding: 8px;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    a {
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+
+    button {
+        margin-top: 15px;
+        align-self: flex-end;
+        width: 100px;
+        background-color: #498DC6;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
 }

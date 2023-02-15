@@ -6,7 +6,9 @@ function Header2() {
   return (
     <div className="header2">
       <div className="left-header">
-        <h3>Waste No food</h3>
+        <h3>
+          <Link to="/">Waste No food</Link>
+        </h3>
         <p>Diverting Excess food to hungry people</p>
       </div>
 
