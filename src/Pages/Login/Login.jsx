@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config";
 import "./Login.scss";
 
 function Login() {
@@ -14,6 +16,13 @@ function Login() {
 
   const loginHandler = () => {
     console.log(loginForm);
+    signInWithEmailAndPassword(auth, loginForm.email, loginForm.password)
+      .then((cred) => {
+        console.log(cred);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="login">

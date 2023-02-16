@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import { auth } from "./firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 import Header from "./Components/Header/Header";
 import Header2 from "./Components/Header2/Header2";
 import Footer from "./Components/Footer/Footer";
@@ -13,6 +16,16 @@ import SignUp from "./Pages/SignUp/SignUp";
 
 import { useLocation } from "react-router-dom";
 function App() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+  });
   const location = useLocation();
   const showHeader2 =
     location.pathname === "/signup" || location.pathname === "/login";

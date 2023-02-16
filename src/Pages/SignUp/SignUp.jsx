@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./SignUp.scss";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase-config";
 function SignUp() {
   const [signupForm, setSignupForm] = useState({
     name: "",
@@ -18,6 +20,13 @@ function SignUp() {
 
   const signupHandler = () => {
     console.log(signupForm);
+    createUserWithEmailAndPassword(auth, signupForm.email, signupForm.password)
+      .then((cred) => {
+        console.log(cred);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="signup">
