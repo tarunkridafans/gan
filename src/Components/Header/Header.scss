@@ -36,13 +36,24 @@
 
   .lower-header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: 40px 3rem;
     background-color: #000d38;
     color: white;
     position: sticky;
     top: 0px;
+
+    h2 {
+      cursor: pointer;
+      font-size: 30px;
+      margin-left: 45px;
+
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    }
 
     ul {
       list-style: none;

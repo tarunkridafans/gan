@@ -8,12 +8,12 @@ function Header() {
           Diverting excess food to the hungry people since 2011
         </span>
         <ul>
-          <li>
+          {/* <li>
             <span>IOS App</span>
           </li>
           <li>
             <span>Android App </span>
-          </li>
+          </li> */}
           <li>
             <span>Admin</span>
           </li>
@@ -23,17 +23,20 @@ function Header() {
         </ul>
       </div>
       <div className="lower-header">
+        <h2>
+          <Link to="/">Waste No food</Link>
+        </h2>
         <ul>
-          <li>About Us</li>
+          {/* <li>About Us</li> */}
           <li>
             <Link to="/food-donors">Food Donors</Link>
           </li>
           <li>
             <Link to="/charities">Charities</Link>
           </li>
-          <li>Volunteers</li>
+          {/* <li>Volunteers</li> */}
           <li>
-            <Link to="/admins">Admins</Link>
+            <Link to="/admins">Admin</Link>
           </li>
           <li>
             <button>DONATE MONEY</button>

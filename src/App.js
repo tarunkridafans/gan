@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import Header from "./Components/Header/Header";
@@ -15,6 +17,7 @@ import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
 
 import { useLocation } from "react-router-dom";
+import Inside from "./Pages/Inside/Inside";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -42,7 +45,15 @@ function App() {
         <Route path="/about"></Route>
         <Route path="/volunteer"></Route>
         <Route path="/contact"></Route>
+        <Route path="*" element={<h1>No route found</h1>} />
+        //loggedin route
+        {user && (
+          <>
+            <Route path="/inside" element={<Inside user={user} />}></Route>
+          </>
+        )}
       </Routes>
+      <ToastContainer />
       {!showHeader2 && <Footer />}
     </div>
   );

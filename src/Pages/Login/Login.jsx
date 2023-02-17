@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
+import { useNavigate } from "react-router-dom";
 import "./Login.scss";
+import { toast } from "react-toastify";
 
 function Login() {
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+
+  const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
     const latest = {};
@@ -19,9 +23,13 @@ function Login() {
     signInWithEmailAndPassword(auth, loginForm.email, loginForm.password)
       .then((cred) => {
         console.log(cred);
+        toast.success("Logged In Successully");
+        navigate("/inside");
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Invalid Credentials");
+        setLoginForm({ email: "", password: "" });
       });
   };
   return (

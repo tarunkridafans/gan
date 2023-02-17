@@ -1,14 +1,25 @@
-import React, { useState } from "react";
 import "./SignUp.scss";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase-config";
+import { toast } from "react-toastify";
+
 function SignUp() {
   const [signupForm, setSignupForm] = useState({
     name: "",
     phone: "",
     email: "",
     password: "",
+    city: "",
+    state: "",
+    zip: "",
+    donor: "",
+    cuisine: "",
   });
+
+  const navigate = useNavigate();
 
   const onChangeHandler = (e) => {
     const latest = {};
@@ -23,9 +34,23 @@ function SignUp() {
     createUserWithEmailAndPassword(auth, signupForm.email, signupForm.password)
       .then((cred) => {
         console.log(cred);
+        toast.success("Signed Up Successully");
+        navigate("/login");
+
+        setDoc(doc(db, "users", "one"), {
+          name: signupForm.name,
+          email: signupForm.email,
+          phone: signupForm.phone,
+          city: signupForm.city,
+          state: signupForm.state,
+          zip: signupForm.zip,
+          donor: signupForm.donor,
+          cuisine: signupForm.cuisine,
+        });
       })
       .catch((err) => {
         console.log(err);
+        toast.success("Sorry could not sign you up");
       });
   };
   return (
