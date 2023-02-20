@@ -1,6 +1,12 @@
 import React from "react";
 import "./Home.scss";
+import { useNavigate } from "react-router-dom";
 function Home() {
+  const navigate = useNavigate();
+
+  const donateFoodHandler = () => {
+    navigate("/food-donors");
+  };
   return (
     <div class="home">
       <section class="intro">
@@ -10,7 +16,7 @@ function Home() {
           We are a non-profit enabling the exchange of excess food from the food
           industry to those who need it most
         </p>
-        <button>Donate food</button>
+        <button onClick={donateFoodHandler}>Donate food</button>
       </section>
       <section className="how">
         <h1>How it Works</h1>

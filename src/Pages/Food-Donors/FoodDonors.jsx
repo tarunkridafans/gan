@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./FoodDonors.scss";
 import { Link } from "react-router-dom";
 function FoodDonors() {
+  useEffect(() => {
+    localStorage.setItem("role", "donor");
+  });
   return (
     <div className="food-donor">
       <section class="intro">

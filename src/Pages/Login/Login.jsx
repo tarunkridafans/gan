@@ -24,7 +24,15 @@ function Login() {
       .then((cred) => {
         console.log(cred);
         toast.success("Logged In Successully");
-        navigate("/inside");
+        const role = localStorage.getItem("role");
+        console.log("role", role);
+        if (role == "donor") {
+          navigate("/foodDonorDashboard");
+        } else if (role == "charity") {
+          navigate("/charitiesDashboard");
+        } else {
+          navigate("/");
+        }
       })
       .catch((err) => {
         console.log(err);

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Charities.scss";
 import { Link } from "react-router-dom";
 function Charities() {
+  useEffect(() => {
+    localStorage.setItem("role", "charity");
+  });
   return (
     <div className="charities">
       <section class="intro">

@@ -15,9 +15,12 @@ import FoodDonors from "./Pages/Food-Donors/FoodDonors";
 import Charities from "./Pages/Charities/Charities";
 import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
+import CharitiesDashboard from "./Pages/Charities-Dashboard/CharitiesDashboard";
+import FoodDonorsDashboard from "./Pages/Food-Donors-Dashboard/FoodDonorsDashboard";
 
 import { useLocation } from "react-router-dom";
 import Inside from "./Pages/Inside/Inside";
+import Header3 from "./Components/Header3/Header3";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -32,9 +35,18 @@ function App() {
   const location = useLocation();
   const showHeader2 =
     location.pathname === "/signup" || location.pathname === "/login";
+  let showHeader3 =
+    location.pathname === "/foodDonorDashboard" ||
+    location.pathname === "/charitiesDashboard";
   return (
     <div className="App">
-      {showHeader2 ? <Header2 /> : <Header />}
+      {showHeader2 ? (
+        <Header2 />
+      ) : showHeader3 ? (
+        <Header3 user={user} />
+      ) : (
+        <Header />
+      )}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/food-donors" element={<FoodDonors />} />
@@ -50,11 +62,19 @@ function App() {
         {user && (
           <>
             <Route path="/inside" element={<Inside user={user} />}></Route>
+            <Route
+              path="/foodDonorDashboard"
+              element={<FoodDonorsDashboard user={user} />}
+            ></Route>
+            <Route
+              path="/charitiesDashboard"
+              element={<CharitiesDashboard user={user} />}
+            ></Route>
           </>
         )}
       </Routes>
       <ToastContainer />
-      {!showHeader2 && <Footer />}
+      {!showHeader3 && !showHeader2 && <Footer />}
     </div>
   );
 }
