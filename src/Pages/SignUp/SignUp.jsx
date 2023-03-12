@@ -37,7 +37,7 @@ function SignUp() {
         toast.success("Signed Up Successully");
         navigate("/login");
 
-        setDoc(doc(db, "users", "one"), {
+        setDoc(doc(db, "users", cred.user.uid), {
           name: signupForm.name,
           email: signupForm.email,
           phone: signupForm.phone,
@@ -50,7 +50,7 @@ function SignUp() {
       })
       .catch((err) => {
         console.log(err);
-        toast.success("Sorry could not sign you up");
+        toast.error(`Sorry could not sign you up\n${err.message}`);
       });
   };
   return (

@@ -1,0 +1,75 @@
+.donors-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+
+    .form {
+        margin-top: 20px;
+        border: 1px solid black;
+        padding: 20px;
+
+
+        h2 {
+            text-align: center;
+            margin: 0;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        select {
+            padding: 8px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+            text-align: left;
+
+            label {
+                margin-bottom: 3px;
+            }
+
+            input {
+                padding: 8px;
+            }
+        }
+
+        .radio-buttons {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .donate {
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 8px 15px;
+            margin-left: auto;
+            width: 80%;
+        }
+    }
+
+    .view {
+        margin-top: 20px;
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    }
+
+}
