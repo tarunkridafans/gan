@@ -17,6 +17,7 @@ import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
 import CharitiesDashboard from "./Pages/Charities-Dashboard/CharitiesDashboard";
 import FoodDonorsDashboard from "./Pages/Food-Donors-Dashboard/FoodDonorsDashboard";
+import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 
 import { useLocation } from "react-router-dom";
 import Inside from "./Pages/Inside/Inside";
@@ -34,10 +35,13 @@ function App() {
   });
   const location = useLocation();
   const showHeader2 =
-    location.pathname === "/signup" || location.pathname === "/login";
+    location.pathname === "/signup" ||
+    location.pathname === "/login" ||
+    location.pathname === "/admin";
   let showHeader3 =
     location.pathname === "/foodDonorDashboard" ||
-    location.pathname === "/charitiesDashboard";
+    location.pathname === "/charitiesDashboard" ||
+    location.pathname === "/adminDashboard";
   return (
     <div className="App">
       {showHeader2 ? (
@@ -69,6 +73,11 @@ function App() {
             <Route
               path="/charitiesDashboard"
               element={<CharitiesDashboard user={user} />}
+            ></Route>
+
+            <Route
+              path="/adminDashboard"
+              element={<AdminDashboard user={user} />}
             ></Route>
           </>
         )}
