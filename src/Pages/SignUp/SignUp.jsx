@@ -46,7 +46,13 @@ function SignUp() {
           zip: signupForm.zip,
           donor: signupForm.donor,
           cuisine: signupForm.cuisine,
-        });
+        })
+          .then((data) => {
+            console.log("data", data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -86,7 +92,11 @@ function SignUp() {
         </div>
         <div>
           <span>Type of Donor</span>
-          <select name="donor" onChange={onChangeHandler}>
+          <select
+            name="donor"
+            value={signupForm?.["donor"]}
+            onChange={onChangeHandler}
+          >
             <option>Farm</option>
             <option>Grocery</option>
             <option>Restaurant</option>
@@ -95,7 +105,11 @@ function SignUp() {
         </div>
         <div>
           <span>Cuisine </span>
-          <select name="cuisine" onChange={onChangeHandler}>
+          <select
+            name="cuisine"
+            value={signupForm?.["cuisine"]}
+            onChange={onChangeHandler}
+          >
             <option>American</option>
             <option>Bakery</option>
             <option>Coffe Shop</option>

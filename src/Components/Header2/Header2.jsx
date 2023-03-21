@@ -8,7 +8,6 @@ function Header2() {
   const location = useLocation();
 
   const isAdminPage = location["pathname"] === "/admin";
-  console.log("isAdminPage", isAdminPage);
   return (
     <div className="header2">
       <div className="left-header">
