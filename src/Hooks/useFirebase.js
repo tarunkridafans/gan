@@ -1,6 +1,11 @@
 import { setDoc, onSnapshot, deleteDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { db, auth } from "../firebase-config";
 import { v4 as uuidv4 } from "uuid";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 const useFirebase = () => {
   async function getDataByCollection(collection) {
@@ -47,11 +52,41 @@ const useFirebase = () => {
     }
   }
 
+  async function signUpWithEmailAndPassword(email, password) {
+    try {
+      let user = createUserWithEmailAndPassword(auth, email, password);
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function logInWithEmailAndPassword(email, password) {
+    try {
+      let user = signInWithEmailAndPassword(auth, email, password);
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function logOut() {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return {
     getDataByCollection,
     getDataByQuery,
     updateByDocRef,
     deleteByDocRef,
+    addDoc,
+    signUpWithEmailAndPassword,
+    logInWithEmailAndPassword,
+    logOut,
   };
 };
 
