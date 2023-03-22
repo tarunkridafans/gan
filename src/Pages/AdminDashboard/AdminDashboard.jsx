@@ -54,13 +54,24 @@ function AdminDashboard({ user }) {
   };
 
   const onChangeHandler = (id, value) => {
-    setSelectedCharity({ id, value });
+    let latestobj = {};
+    latestobj[id] = value;
+    setSelectedCharity((prev) => {
+      return { ...prev, ...latestobj };
+    });
   };
 
   const updateStatusHandler = async (id) => {
+    let charityName = selectedCharity[id];
+    let charity = charities.find((charity) => {
+      return charity["name"] == charityName;
+    });
+    if (!charity) {
+      charity = charities[0];
+    }
     const docRef = doc(db, "donations", id);
     try {
-      await updateDoc(docRef, { assigned: true });
+      await updateDoc(docRef, { assigned: true, donatedTo: charity["id"] });
     } catch (err) {
       console.error(err);
     }
@@ -173,7 +184,7 @@ function AdminDashboard({ user }) {
                         ).toDateString()}
                       </td>
                       {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
-                      <td>NA</td>
+                      <td>{item["donatedTo"]}</td>
                     </tr>
                   )
                 );

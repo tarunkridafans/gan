@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./FoodDonorsDashboard.scss";
-import { useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
@@ -86,25 +85,25 @@ function FoodDonorsDashboard({ user }) {
     setDonateForm(formInitialData);
   };
 
-  const updateStatusHandler = async (id) => {
-    console.log("update", id);
-    const docRef = doc(db, "donations", id);
-    try {
-      await updateDoc(docRef, { assigned: true });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const updateStatusHandler = async (id) => {
+  //   console.log("update", id);
+  //   const docRef = doc(db, "donations", id);
+  //   try {
+  //     await updateDoc(docRef, { assigned: true });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
-  const deleteHandler = async (id) => {
-    console.log("delete", id);
-    const docRef = doc(db, "donations", id);
-    try {
-      await deleteDoc(docRef);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const deleteHandler = async (id) => {
+  //   console.log("delete", id);
+  //   const docRef = doc(db, "donations", id);
+  //   try {
+  //     await deleteDoc(docRef);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const isDonateFormValid = () => {
     if (!donateForm?.["donationName"]) {
@@ -217,17 +216,17 @@ function FoodDonorsDashboard({ user }) {
                 // console.log("item", index, item);
                 return (
                   <tr key={index}>
-                    <th>{index + 1}</th>
-                    <th>{item["donationName"]}</th>
-                    <th>{item["address"]}</th>
-                    <th>{item["specialNote"]}</th>
-                    <th>
+                    <td>{index + 1}</td>
+                    <td>{item["donationName"]}</td>
+                    <td>{item["address"]}</td>
+                    <td>{item["specialNote"]}</td>
+                    <td>
                       {new Date(
                         item["createdAt"]?.["seconds"] * 1000
                       ).toDateString()}
-                    </th>
-                    <th>{item["assigned"] ? "Approved" : "NA"}</th>
-                    <th>
+                    </td>
+                    <td>{item["assigned"] ? "Approved" : "NA"}</td>
+                    {/* <th>
                       <button
                         onClick={() => {
                           updateStatusHandler(item.id);
@@ -244,7 +243,7 @@ function FoodDonorsDashboard({ user }) {
                       >
                         Delete Donation
                       </button>
-                    </th>
+                    </th> */}
                   </tr>
                 );
               })}
