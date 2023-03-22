@@ -19,7 +19,7 @@ function Login() {
   };
 
   const loginHandler = () => {
-    console.log(loginForm);
+    // console.log(loginForm);
     signInWithEmailAndPassword(auth, loginForm.email, loginForm.password)
       .then((cred) => {
         console.log(cred);

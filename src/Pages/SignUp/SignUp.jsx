@@ -46,6 +46,7 @@ function SignUp() {
           zip: signupForm.zip,
           donor: signupForm.donor,
           cuisine: signupForm.cuisine,
+          role: localStorage.getItem("role"),
         })
           .then((data) => {
             console.log("data", data);

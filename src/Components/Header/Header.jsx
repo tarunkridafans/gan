@@ -36,7 +36,7 @@ function Header() {
           </li>
           {/* <li>Volunteers</li> */}
           <li>
-            <Link to="/admins">Admin</Link>
+            <Link to="/admin">Admin</Link>
           </li>
           <li>
             <button>DONATE MONEY</button>
