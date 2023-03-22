@@ -27,10 +27,6 @@ function AdminDashboard({ user }) {
     fetchCharities();
   }, []);
 
-  useEffect(() => {
-    console.log("selectedCharity", selectedCharity);
-  }, [selectedCharity]);
-
   const fetchDonations = async () => {
     const colRef = collection(db, "donations");
     onSnapshot(colRef, (snapshot) => {
@@ -72,6 +68,7 @@ function AdminDashboard({ user }) {
     const docRef = doc(db, "donations", id);
     try {
       await updateDoc(docRef, { assigned: true, donatedTo: charity["id"] });
+      toast.success("Donation Assigned");
     } catch (err) {
       console.error(err);
     }
@@ -81,10 +78,19 @@ function AdminDashboard({ user }) {
     const docRef = doc(db, "donations", id);
     try {
       await deleteDoc(docRef);
+      toast.success("Donation Rejected");
     } catch (err) {
       console.error(err);
     }
   };
+
+  const getCharityName = (id) => {
+    let charity = charities.find((charity) => {
+      return charity["id"] == id;
+    });
+    return charity["name"];
+  };
+
   return (
     <div>
       <h2>AdminDashboard</h2>
@@ -184,7 +190,7 @@ function AdminDashboard({ user }) {
                         ).toDateString()}
                       </td>
                       {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
-                      <td>{item["donatedTo"]}</td>
+                      <td>{getCharityName(item["donatedTo"])}</td>
                     </tr>
                   )
                 );
