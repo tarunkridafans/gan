@@ -58,7 +58,7 @@ function AdminDashboard({ user }) {
   };
 
   const updateStatusHandler = async (id) => {
-    let charityName = selectedCharity[id];
+    let charityName = selectedCharity?.[id];
     let charity = charities.find((charity) => {
       return charity["name"] == charityName;
     });
