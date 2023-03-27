@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [role, setRole] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let role = localStorage.getItem("role");
+    if (!role) {
+      navigate("/");
+    }
+    setRole(role);
+  }, []);
 
   const onChangeHandler = (e) => {
     const latest = {};
@@ -42,6 +52,10 @@ function Login() {
   };
   return (
     <div className="login">
+      <div className="header">
+        <span>Home / </span>
+        {role?.charAt(0).toLocaleUpperCase() + role?.substring(1)} Login Page
+      </div>
       <div className="form">
         <div>
           <span>Email</span>
@@ -61,8 +75,11 @@ function Login() {
             type="password"
           />
         </div>
-        <a>Forgot Password?</a>
         <button onClick={loginHandler}>Login</button>
+        <a>Forgot Password?</a>
+        <span className="account">
+          Don't have an account? <Link to="/signup">Create one now</Link>
+        </span>
       </div>
     </div>
   );

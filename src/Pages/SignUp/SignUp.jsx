@@ -1,5 +1,5 @@
 import "./SignUp.scss";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -9,17 +9,23 @@ import { toast } from "react-toastify";
 function SignUp() {
   const [signupForm, setSignupForm] = useState({
     name: "",
-    phone: "",
     email: "",
+    phone: "",
+    address: "",
     password: "",
-    city: "",
-    state: "",
-    zip: "",
-    donor: "",
-    cuisine: "",
+    confirmPassword: "",
   });
+  const [role, setRole] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let role = localStorage.getItem("role");
+    if (!role) {
+      navigate("/");
+    }
+    setRole(role);
+  }, []);
 
   const onChangeHandler = (e) => {
     const latest = {};
@@ -38,14 +44,7 @@ function SignUp() {
         navigate("/login");
 
         setDoc(doc(db, "users", cred.user.uid), {
-          name: signupForm.name,
-          email: signupForm.email,
-          phone: signupForm.phone,
-          city: signupForm.city,
-          state: signupForm.state,
-          zip: signupForm.zip,
-          donor: signupForm.donor,
-          cuisine: signupForm.cuisine,
+          ...signupForm,
           role: localStorage.getItem("role"),
         })
           .then((data) => {
@@ -62,24 +61,40 @@ function SignUp() {
   };
   return (
     <div className="signup">
+      <div className="header">
+        <span>Home /</span>{" "}
+        {role?.charAt(0).toLocaleUpperCase() + role?.substring(1)} Signup Page
+      </div>
       <div className="form">
         <div>
-          <span>Name</span>
+          <span>User Name</span>
           <input name="name" onChange={onChangeHandler} type="text" />
         </div>
         <div>
-          <span>Phone</span>
+          <span>Email ID</span>
+          <input name="email" onChange={onChangeHandler} type="text" />
+        </div>
+        <div>
+          <span>Mobile Number</span>
           <input name="phone" onChange={onChangeHandler} type="text" />
         </div>
         <div>
-          <span>Email</span>
-          <input name="email" onChange={onChangeHandler} type="text" />
+          <span>Address</span>
+          <input name="address" onChange={onChangeHandler} type="text" />
         </div>
         <div>
           <span>Password</span>
           <input name="password" onChange={onChangeHandler} type="password" />
         </div>
         <div>
+          <span>Confirm Password</span>
+          <input
+            name="confirmPassword"
+            onChange={onChangeHandler}
+            type="password"
+          />
+        </div>
+        {/* <div>
           <span>City</span>
           <input name="city" onChange={onChangeHandler} type="text" />
         </div>
@@ -119,9 +134,9 @@ function SignUp() {
             <option>French</option>
             <option>Other</option>
           </select>
-        </div>
+        </div> */}
         <div className="signup-button">
-          <button onClick={signupHandler}>SignUp</button>
+          <button onClick={signupHandler}>Register</button>
         </div>
       </div>
     </div>
