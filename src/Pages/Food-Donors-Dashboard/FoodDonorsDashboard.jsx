@@ -4,14 +4,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -26,6 +19,9 @@ const formInitialData = {
 function FoodDonorsDashboard({ user }) {
   const [donations, setDonations] = useState();
   const [donateForm, setDonateForm] = useState(formInitialData);
+  const [donateNow, setDonateNow] = useState(false);
+  const [currentDonation, setCurrentDonation] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
@@ -76,6 +72,8 @@ function FoodDonorsDashboard({ user }) {
     setDoc(doc(db, "donations", uuidv4()), docData)
       .then((data) => {
         toast.success("Donation Successfull");
+
+        setCurrentDonation(docData);
         console.log("data", data);
       })
       .catch((err) => {
@@ -84,26 +82,6 @@ function FoodDonorsDashboard({ user }) {
 
     setDonateForm(formInitialData);
   };
-
-  // const updateStatusHandler = async (id) => {
-  //   console.log("update", id);
-  //   const docRef = doc(db, "donations", id);
-  //   try {
-  //     await updateDoc(docRef, { assigned: true });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  // const deleteHandler = async (id) => {
-  //   console.log("delete", id);
-  //   const docRef = doc(db, "donations", id);
-  //   try {
-  //     await deleteDoc(docRef);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   const isDonateFormValid = () => {
     if (!donateForm?.["donationName"]) {
@@ -125,130 +103,170 @@ function FoodDonorsDashboard({ user }) {
 
     return true;
   };
+
+  const sideNavHandler = (flag) => {
+    setCurrentDonation(null);
+    setDonateNow(flag);
+  };
   return (
     <div className="donors-page">
-      <div className="form">
-        <h2>Donate Now</h2>
-
-        <div className="field">
-          <label>Donation Name </label>
-          <select
-            name="donationName"
-            value={donateForm?.["donationName"]}
-            onChange={onChangeHandler}
-          >
-            <option value="food">Food</option>
-          </select>
-        </div>
-        <div className="radio-buttons">
-          <input
-            type="radio"
-            id="non-veg"
-            name="type_of_food"
-            value="non-veg"
-            onChange={onChangeHandler}
-          />
-          <label htmlFor="non-veg">Non-veg food</label>
-          <input
-            type="radio"
-            id="veg"
-            name="type_of_food"
-            value="veg"
-            onChange={onChangeHandler}
-          />
-          <label htmlFor="veg">Veg food</label>
-          <input
-            type="radio"
-            id="both"
-            name="type_of_food"
-            value="both"
-            onChange={onChangeHandler}
-          />
-          <label htmlFor="both">Both</label>
-        </div>
-        <div className="field">
-          <label>How old food is? </label>
-          <input
-            type="text"
-            name="oldFood"
-            value={donateForm?.["oldFood"]}
-            onChange={onChangeHandler}
-          />
-        </div>
-        <div className="field">
-          <label>Donation collection Address </label>
-          <input
-            type="text"
-            name="address"
-            value={donateForm?.["address"]}
-            onChange={onChangeHandler}
-          />
-        </div>
-        <div className="field">
-          <label>Special Note</label>
-          <textarea
-            name="specialNote"
-            rows="4"
-            cols="50"
-            onChange={onChangeHandler}
-            value={donateForm?.["specialNote"]}
-          ></textarea>
-        </div>
-        <button className="donate" onClick={donateHandler}>
-          Donate Happiness
-        </button>
+      <div className="side-nav">
+        <span onClick={() => sideNavHandler(true)}>Donate Now</span>
+        <span onClick={() => sideNavHandler(false)}>Your donations</span>
       </div>
-      <div className="view">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Donation Name</th>
-              <th>Donation Pickup Location</th>
-              <th>Special Note</th>
-              <th>Donation Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {donations &&
-              donations.map((item, index) => {
-                // console.log("item", index, item);
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item["donationName"]}</td>
-                    <td>{item["address"]}</td>
-                    <td>{item["specialNote"]}</td>
-                    <td>
-                      {new Date(
-                        item["createdAt"]?.["seconds"] * 1000
-                      ).toDateString()}
-                    </td>
-                    <td>{item["assigned"] ? "Approved" : "NA"}</td>
-                    {/* <th>
-                      <button
-                        onClick={() => {
-                          updateStatusHandler(item.id);
-                        }}
-                      >
-                        Update status
-                      </button>
-                    </th>
-                    <th>
-                      <button
-                        onClick={() => {
-                          deleteHandler(item.id);
-                        }}
-                      >
-                        Delete Donation
-                      </button>
-                    </th> */}
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      <div className="main">
+        {console.log("status", donateNow && !currentDonation)}
+        {donateNow && !currentDonation && (
+          <div className="form">
+            <h2>Donate Now</h2>
+            <div className="field">
+              <label>Donation Name </label>
+              <select
+                name="donationName"
+                value={donateForm?.["donationName"]}
+                onChange={onChangeHandler}
+              >
+                <option value="food">Food</option>
+              </select>
+            </div>
+            <div className="radio-buttons">
+              <input
+                type="radio"
+                id="non-veg"
+                name="type_of_food"
+                value="non-veg"
+                onChange={onChangeHandler}
+              />
+              <label htmlFor="non-veg">Non-veg food</label>
+              <input
+                type="radio"
+                id="veg"
+                name="type_of_food"
+                value="veg"
+                onChange={onChangeHandler}
+              />
+              <label htmlFor="veg">Veg food</label>
+              <input
+                type="radio"
+                id="both"
+                name="type_of_food"
+                value="both"
+                onChange={onChangeHandler}
+              />
+              <label htmlFor="both">Both</label>
+            </div>
+            <div className="field">
+              <label>How old food is? </label>
+              <input
+                type="text"
+                name="oldFood"
+                value={donateForm?.["oldFood"]}
+                onChange={onChangeHandler}
+              />
+            </div>
+            <div className="field">
+              <label>Donation collection Address </label>
+              <input
+                type="text"
+                name="address"
+                value={donateForm?.["address"]}
+                onChange={onChangeHandler}
+              />
+            </div>
+            <div className="field">
+              <label>Special Note</label>
+              <textarea
+                name="specialNote"
+                rows="4"
+                cols="50"
+                onChange={onChangeHandler}
+                value={donateForm?.["specialNote"]}
+              ></textarea>
+            </div>
+            <button className="donate" onClick={donateHandler}>
+              Donate Happiness
+            </button>
+          </div>
+        )}
+        {currentDonation && donateNow && (
+          <div className="thank-you">
+            <div>
+              <h2>
+                <span>Thank</span> you
+              </h2>
+              <span>Thanks for your support</span>
+
+              <p>Thank You for the donation!</p>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Donation Name</th>
+                  <th>Donation Pickup Location</th>
+                  <th>Special Note</th>
+                  <th>Donation Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{1}</td>
+                  <td>{currentDonation["donationName"]}</td>
+                  <td>{currentDonation["address"]}</td>
+                  <td>{currentDonation["specialNote"]}</td>
+                  <td>
+                    {new Date(
+                      currentDonation["createdAt"]?.["seconds"] * 1000
+                    ).toDateString()}
+                  </td>
+                  <td>
+                    {currentDonation["assigned"]
+                      ? "Approved"
+                      : "Not yet Confirm"}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+        {!donateNow && (
+          <div className="view">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Donation Name</th>
+                  <th>Donation Pickup Location</th>
+                  <th>Special Note</th>
+                  <th>Donation Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {donations &&
+                  donations.map((item, index) => {
+                    // console.log("item", index, item);
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item["donationName"]}</td>
+                        <td>{item["address"]}</td>
+                        <td>{item["specialNote"]}</td>
+                        <td>
+                          {new Date(
+                            item["createdAt"]?.["seconds"] * 1000
+                          ).toDateString()}
+                        </td>
+                        <td>{item["assigned"] ? "Approved" : "NA"}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
