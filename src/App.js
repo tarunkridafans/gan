@@ -15,6 +15,7 @@ import FoodDonors from "./Pages/Food-Donors/FoodDonors";
 import Charities from "./Pages/Charities/Charities";
 import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import CharitiesDashboard from "./Pages/Charities-Dashboard/CharitiesDashboard";
 import FoodDonorsDashboard from "./Pages/Food-Donors-Dashboard/FoodDonorsDashboard";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
@@ -37,6 +38,7 @@ function App() {
   const showHeader2 =
     location.pathname === "/signup" ||
     location.pathname === "/login" ||
+    location.pathname === "/forgot" ||
     location.pathname === "/admin";
   let showHeader3 =
     location.pathname === "/foodDonorDashboard" ||
@@ -58,6 +60,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/forgot" element={<ForgotPassword />}></Route>
         <Route path="/about"></Route>
         <Route path="/volunteer"></Route>
         <Route path="/contact"></Route>
