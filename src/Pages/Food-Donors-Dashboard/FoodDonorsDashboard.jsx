@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./FoodDonorsDashboard.scss";
+import { auth } from "../../firebase-config";
+import { updatePassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
@@ -16,10 +18,18 @@ const formInitialData = {
   specialNote: "",
 };
 
+const changePasswordFormInitialData = {
+  password: "",
+  confirmPassword: "",
+};
 function FoodDonorsDashboard({ user }) {
   const [donations, setDonations] = useState();
   const [donateForm, setDonateForm] = useState(formInitialData);
   const [donateNow, setDonateNow] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [changePasswordForm, setChangePasswordForm] = useState(
+    changePasswordFormInitialData
+  );
   const [currentDonation, setCurrentDonation] = useState(false);
 
   const navigate = useNavigate();
@@ -106,13 +116,47 @@ function FoodDonorsDashboard({ user }) {
 
   const sideNavHandler = (flag) => {
     setCurrentDonation(null);
+    setShowChangePassword(false);
     setDonateNow(flag);
+  };
+
+  const changePasswordHandler = async () => {
+    if (
+      changePasswordForm["password"] !== changePasswordForm["confirmPassword"]
+    ) {
+      toast.error("Passwords do not match");
+    }
+    try {
+      await updatePassword(
+        auth.currentUser,
+        changePasswordForm["confirmPassword"]
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const changePasswordOnChangeHandler = (e) => {
+    const latest = {};
+    latest[e.target.name] = e.target.value;
+    setChangePasswordForm((prev) => {
+      return { ...prev, ...latest };
+    });
+  };
+
+  const changePasswordSideNavHandler = () => {
+    setCurrentDonation(null);
+    setDonateNow(false);
+    setShowChangePassword(true);
   };
   return (
     <div className="donors-page">
       <div className="side-nav">
         <span onClick={() => sideNavHandler(true)}>Donate Now</span>
         <span onClick={() => sideNavHandler(false)}>Your donations</span>
+        <span onClick={() => changePasswordSideNavHandler(true)}>
+          Change Password
+        </span>
       </div>
       <div className="main">
         {donateNow && !currentDonation && (
@@ -226,7 +270,7 @@ function FoodDonorsDashboard({ user }) {
             </table>
           </div>
         )}
-        {!donateNow && (
+        {!donateNow && !showChangePassword && (
           <div className="view">
             <table>
               <thead>
@@ -264,6 +308,27 @@ function FoodDonorsDashboard({ user }) {
                   })}
               </tbody>
             </table>
+          </div>
+        )}
+        {showChangePassword && (
+          <div className="change-password">
+            <div>
+              <span>Password</span>
+              <input
+                name="password"
+                onChange={changePasswordOnChangeHandler}
+                type="password"
+              />
+            </div>
+            <div>
+              <span>Confirm Password</span>
+              <input
+                name="confirmPassword"
+                onChange={changePasswordOnChangeHandler}
+                type="password"
+              />
+            </div>
+            <button onClick={changePasswordHandler}> Change Password</button>
           </div>
         )}
       </div>
