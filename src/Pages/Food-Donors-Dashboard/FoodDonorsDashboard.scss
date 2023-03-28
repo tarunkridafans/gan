@@ -26,6 +26,9 @@
 
     .main {
         width: 80vw;
+        height: 100%;
+        margin-top: 25px;
+        padding-top: 5px;
 
         .form {
             margin-top: 20px;
@@ -97,29 +100,54 @@
                 margin-top: 30px;
                 font-size: 28px;
             }
+
+            table {
+                width: 80%;
+                margin: 0 auto;
+            }
         }
 
         .view {
-            margin-top: 20px;
+            margin-top: 50px;
             width: 90%;
             margin-left: auto;
             margin-right: auto;
 
             table {
                 font-family: arial, sans-serif;
+                border-spacing: 1;
                 border-collapse: collapse;
+                background: #fff;
+                border-radius: 10px;
+                overflow: hidden;
                 width: 100%;
+                margin: 0 auto;
+                position: relative;
+
+                thead {
+                    tr {
+                        height: 60px;
+                        background: #36304a;
+                        color: white;
+                    }
+                }
+
+                tbody {
+                    tr {
+                        font-family: OpenSans-Regular;
+                        font-size: 15px;
+                        color: gray;
+                        line-height: 1.2;
+                        font-weight: unset;
+                    }
+                }
             }
 
             td,
             th {
                 border: 1px solid #dddddd;
                 text-align: left;
-                padding: 8px;
-            }
-
-            tr:nth-child(even) {
-                background-color: #dddddd;
+                padding: 15px;
             }
         }
 

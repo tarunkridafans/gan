@@ -115,7 +115,6 @@ function FoodDonorsDashboard({ user }) {
         <span onClick={() => sideNavHandler(false)}>Your donations</span>
       </div>
       <div className="main">
-        {console.log("status", donateNow && !currentDonation)}
         {donateNow && !currentDonation && (
           <div className="form">
             <h2>Donate Now</h2>
@@ -206,7 +205,7 @@ function FoodDonorsDashboard({ user }) {
                   <th>Donation Name</th>
                   <th>Donation Pickup Location</th>
                   <th>Special Note</th>
-                  <th>Donation Date</th>
+                  <th>Food Condition</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -216,11 +215,7 @@ function FoodDonorsDashboard({ user }) {
                   <td>{currentDonation["donationName"]}</td>
                   <td>{currentDonation["address"]}</td>
                   <td>{currentDonation["specialNote"]}</td>
-                  <td>
-                    {new Date(
-                      currentDonation["createdAt"]?.["seconds"] * 1000
-                    ).toDateString()}
-                  </td>
+                  <td>{currentDonation["oldFood"]}</td>
                   <td>
                     {currentDonation["assigned"]
                       ? "Approved"
@@ -240,6 +235,7 @@ function FoodDonorsDashboard({ user }) {
                   <th>Donation Name</th>
                   <th>Donation Pickup Location</th>
                   <th>Special Note</th>
+                  <th>Food Condition</th>
                   <th>Donation Date</th>
                   <th>Status</th>
                 </tr>
@@ -254,12 +250,15 @@ function FoodDonorsDashboard({ user }) {
                         <td>{item["donationName"]}</td>
                         <td>{item["address"]}</td>
                         <td>{item["specialNote"]}</td>
+                        <td>{item["oldFood"]}</td>
                         <td>
                           {new Date(
                             item["createdAt"]?.["seconds"] * 1000
                           ).toDateString()}
                         </td>
-                        <td>{item["assigned"] ? "Approved" : "NA"}</td>
+                        <td>
+                          {item["assigned"] ? "Approved" : "Not yet Approved"}
+                        </td>
                       </tr>
                     );
                   })}
