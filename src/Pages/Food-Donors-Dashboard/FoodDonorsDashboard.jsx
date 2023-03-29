@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./FoodDonorsDashboard.scss";
 import { auth } from "../../firebase-config";
-import { updatePassword } from "firebase/auth";
+import {
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
@@ -20,6 +24,7 @@ const formInitialData = {
 
 const changePasswordFormInitialData = {
   password: "",
+  newPassword: "",
   confirmPassword: "",
 };
 function FoodDonorsDashboard({ user }) {
@@ -122,15 +127,31 @@ function FoodDonorsDashboard({ user }) {
 
   const changePasswordHandler = async () => {
     if (
-      changePasswordForm["password"] !== changePasswordForm["confirmPassword"]
+      changePasswordForm["newPassword"] !==
+      changePasswordForm["confirmPassword"]
     ) {
       toast.error("Passwords do not match");
     }
     try {
-      await updatePassword(
-        auth.currentUser,
-        changePasswordForm["confirmPassword"]
+      let user = auth.currentUser;
+      let credential = EmailAuthProvider.credential(
+        user.email,
+        changePasswordForm["password"]
       );
+      console.log(
+        credential,
+        credential._getReauthenticationResolver,
+        changePasswordForm["password"]
+      );
+      let res = await reauthenticateWithCredential(user, credential);
+      if (res?.user) {
+        await updatePassword(
+          auth.currentUser,
+          changePasswordForm["confirmPassword"]
+        );
+      }
+      setChangePasswordForm(changePasswordFormInitialData);
+      toast.success("Password Changed Succesfully");
     } catch (error) {
       console.error(error);
     }
@@ -313,9 +334,17 @@ function FoodDonorsDashboard({ user }) {
         {showChangePassword && (
           <div className="change-password">
             <div>
-              <span>Password</span>
+              <span>Current Password</span>
               <input
                 name="password"
+                onChange={changePasswordOnChangeHandler}
+                type="password"
+              />
+            </div>
+            <div>
+              <span>New Password</span>
+              <input
+                name="newPassword"
                 onChange={changePasswordOnChangeHandler}
                 type="password"
               />
