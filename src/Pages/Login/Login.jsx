@@ -76,7 +76,7 @@ function Login() {
           />
         </div>
         <button onClick={loginHandler}>Login</button>
-        <a>Forgot Password?</a>
+        <Link to="/forgot">Forgot Password?</Link>
         <span className="account">
           Don't have an account? <Link to="/signup">Create one now</Link>
         </span>
