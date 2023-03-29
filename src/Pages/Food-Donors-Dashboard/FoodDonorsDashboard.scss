@@ -2,12 +2,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 90vh;
     width: 100vw;
+    height: 100%;
 
     .side-nav {
-        margin-top: 25px;
-        padding-top: 5px;
+        // margin-top: 25px;
+        // padding-top: 5px;
         display: flex;
         flex-direction: column;
         width: 20vw;
@@ -27,8 +27,8 @@
     .main {
         width: 80vw;
         height: 100%;
-        margin-top: 25px;
-        padding-top: 5px;
+        // margin-top: 25px;
+        // padding-top: 5px;
 
         .form {
             margin-top: 20px;
