@@ -72,4 +72,15 @@
         cursor: pointer;
         width: 100%;
     }
+
+    .last {
+        margin-top: 30px;
+
+        a {
+            text-decoration: none;
+            color: #498CC6;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    }
 }

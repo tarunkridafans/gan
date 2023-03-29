@@ -1,6 +1,6 @@
 import "./SignUp.scss";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase-config";
@@ -138,6 +138,9 @@ function SignUp() {
         <div className="signup-button">
           <button onClick={signupHandler}>Register</button>
         </div>
+        <span className="last">
+          Already have an account? <Link to="/login">Login</Link>
+        </span>
       </div>
     </div>
   );

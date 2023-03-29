@@ -22,7 +22,7 @@ function Header3({ user }) {
   };
   return (
     <div className="header3">
-      <span className="user-name">{`Hiii ${user?.email}`}</span>
+      <span className="user-name">{`Hi ${user?.email}`}</span>
       <button onClick={logOutHandler}>Logout</button>
     </div>
   );

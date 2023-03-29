@@ -170,12 +170,29 @@ function FoodDonorsDashboard({ user }) {
     setDonateNow(false);
     setShowChangePassword(true);
   };
+
+  const isActive = () => {};
   return (
     <div className="donors-page">
       <div className="side-nav">
-        <span onClick={() => sideNavHandler(true)}>Donate Now</span>
-        <span onClick={() => sideNavHandler(false)}>Your donations</span>
-        <span onClick={() => changePasswordSideNavHandler(true)}>
+        <span
+          onClick={() => sideNavHandler(true)}
+          className={`${(donateNow || currentDonation) && "active"}`}
+        >
+          Donate Now
+        </span>
+        <span
+          onClick={() => sideNavHandler(false)}
+          className={`${
+            !donateNow && !currentDonation && !showChangePassword && "active"
+          }`}
+        >
+          Your donations
+        </span>
+        <span
+          onClick={() => changePasswordSideNavHandler(true)}
+          className={`${showChangePassword && "active"}`}
+        >
           Change Password
         </span>
       </div>
