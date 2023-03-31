@@ -86,7 +86,7 @@ function AdminDashboard({ user }) {
   };
 
   const getCharityName = (id) => {
-    let charity = charities.find((charity) => {
+    let charity = charities?.find((charity) => {
       return charity["id"] == id;
     });
     return charity["name"];
