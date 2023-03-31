@@ -11,12 +11,12 @@ function Home() {
 
   const donorSignUpNavigation = () => {
     localStorage.setItem("role", "donor");
-    navigate("/signup");
+    navigate("/login");
   };
 
   const charitySignUpNavigation = () => {
     localStorage.setItem("role", "charity");
-    navigate("/signup");
+    navigate("/login");
   };
 
   const adminSignInNavigation = () => {
@@ -38,7 +38,7 @@ function Home() {
         <div className="three-grid">
           <div>
             {/* <img /> */}
-            <div className="description">
+            <div className="description first">
               <span onClick={donorSignUpNavigation} className="heading">
                 Donor
               </span>
@@ -51,7 +51,7 @@ function Home() {
           </div>
           <div>
             {/* <img /> */}
-            <div className="description">
+            <div className="description second">
               <span onClick={charitySignUpNavigation} className="heading">
                 Charity
               </span>
@@ -64,7 +64,7 @@ function Home() {
           </div>
           <div>
             {/* <img /> */}
-            <div className="description">
+            <div className="description third">
               <span onClick={adminSignInNavigation} className="heading">
                 Admin
               </span>

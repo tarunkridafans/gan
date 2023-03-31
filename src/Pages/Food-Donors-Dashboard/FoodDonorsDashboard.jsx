@@ -6,7 +6,8 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { GrCircleInformation } from "react-icons/gr";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
@@ -36,6 +37,8 @@ function FoodDonorsDashboard({ user }) {
     changePasswordFormInitialData
   );
   const [currentDonation, setCurrentDonation] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [charityInfo, setCharityInfo] = useState(null);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -171,7 +174,23 @@ function FoodDonorsDashboard({ user }) {
     setShowChangePassword(true);
   };
 
-  const isActive = () => {};
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
+
+  const infoClickHandler = (donation) => {
+    console.log("donation", donation["donatedTo"]);
+    getCharityDetails(donation["donatedTo"]);
+    setShowModal(true);
+  };
+
+  const getCharityDetails = async (id) => {
+    const docRef = doc(db, "users", id);
+    const docSnap = await getDoc(docRef);
+    setCharityInfo(docSnap.data());
+    console.log("user", docSnap.data());
+  };
+
   return (
     <div className="donors-page">
       <div className="side-nav">
@@ -298,7 +317,11 @@ function FoodDonorsDashboard({ user }) {
                   <td>{currentDonation["address"]}</td>
                   <td>{currentDonation["specialNote"]}</td>
                   <td>{currentDonation["oldFood"]}</td>
-                  <td>
+                  <td
+                    className={`${
+                      currentDonation["assigned"] ? "green" : "red"
+                    }`}
+                  >
                     {currentDonation["assigned"]
                       ? "Approved"
                       : "Not yet Confirm"}
@@ -338,8 +361,17 @@ function FoodDonorsDashboard({ user }) {
                             item["createdAt"]?.["seconds"] * 1000
                           ).toDateString()}
                         </td>
-                        <td>
-                          {item["assigned"] ? "Approved" : "Not yet Approved"}
+                        <td className={`${item["assigned"] ? "green" : "red"}`}>
+                          {item["assigned"] ? (
+                            <div>
+                              Approved{" "}
+                              <GrCircleInformation
+                                onClick={() => infoClickHandler(item)}
+                              />
+                            </div>
+                          ) : (
+                            "Not yet Approved"
+                          )}
                         </td>
                       </tr>
                     );
@@ -378,6 +410,20 @@ function FoodDonorsDashboard({ user }) {
           </div>
         )}
       </div>
+      {showModal && (
+        <div className="modal">
+          <button className="close" onClick={closeModalHandler}>
+            {" "}
+            Close
+          </button>
+          <div className="content">
+            <span>Name: {charityInfo?.["name"]}</span>
+            <span>Email: {charityInfo?.["email"]}</span>
+            <span>Phone: {charityInfo?.["phone"]}</span>
+            <span>Address: {charityInfo?.["address"]}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -17,6 +17,7 @@ function AdminDashboard({ user }) {
   const [donations, setDonations] = useState();
   const [charities, setCharities] = useState();
   const [selectedCharity, setSelectedCharity] = useState(charities?.[0]);
+  const [todaysDonation, setTodaysDonation] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -91,112 +92,146 @@ function AdminDashboard({ user }) {
     return charity["name"];
   };
 
-  return (
-    <div>
-      <h2>AdminDashboard</h2>
-      <div className="view">
-        <h3>Pending Requests</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Donation Name</th>
-              <th>Donation Pickup Location</th>
-              <th>Special Note</th>
-              <th>Donation Date</th>
-              <th>Status</th>
-              <th>Assign To</th>
-            </tr>
-          </thead>
-          <tbody>
-            {donations &&
-              donations.map((item, index) => {
-                return (
-                  !item["assigned"] && (
-                    <tr key={item.id}>
-                      <td>{index + 1}</td>
-                      <td>{item["donationName"]}</td>
-                      <td>{item["address"]}</td>
-                      <td>{item["specialNote"]}</td>
-                      <td>
-                        {new Date(
-                          item["createdAt"]?.["seconds"] * 1000
-                        ).toDateString()}
-                      </td>
-                      <td>{item["assigned"] ? "Approved" : "NA"}</td>
-                      <td>
-                        {" "}
-                        <select
-                          onChange={(e) =>
-                            onChangeHandler(item.id, e.target.value)
-                          }
-                        >
-                          {charities &&
-                            charities.map((charity) => {
-                              return <option>{charity["name"]}</option>;
-                            })}
-                        </select>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => {
-                            updateStatusHandler(item.id);
-                          }}
-                        >
-                          Assign
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => {
-                            deleteHandler(item.id);
-                          }}
-                        >
-                          Reject Donation
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                );
-              })}
-          </tbody>
-        </table>
+  const todayDonationHandler = () => {
+    setTodaysDonation(true);
+    let todaysDate = new Date();
+    setDonations((prev) => {
+      return prev.filter((item) => {
+        let donationDate = new Date(item["createdAt"]["seconds"] * 1000);
+        return (
+          donationDate.setHours(0, 0, 0, 0) == todaysDate.setHours(0, 0, 0, 0)
+        );
+      });
+    });
+  };
 
-        <h3>Accepted Requests</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Donation Name</th>
-              <th>Donation Pickup Location</th>
-              <th>Special Note</th>
-              <th>Donation Date</th>
-              <th>Assigned To</th>
-            </tr>
-          </thead>
-          <tbody>
-            {donations &&
-              donations.map((item, index) => {
-                return (
-                  item["assigned"] && (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{item["donationName"]}</td>
-                      <td>{item["address"]}</td>
-                      <td>{item["specialNote"]}</td>
-                      <td>
-                        {new Date(
-                          item["createdAt"]?.["seconds"] * 1000
-                        ).toDateString()}
-                      </td>
-                      {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
-                      <td>{getCharityName(item["donatedTo"])}</td>
-                    </tr>
-                  )
-                );
-              })}
-          </tbody>
-        </table>
+  const allDonationsHandler = () => {
+    setTodaysDonation(false);
+    fetchDonations();
+  };
+
+  return (
+    <div className="admin-dash">
+      <div className="side-nav">
+        <span
+          onClick={todayDonationHandler}
+          className={`${todaysDonation && "active"}`}
+        >
+          Todays Donations
+        </span>
+        <span
+          onClick={allDonationsHandler}
+          className={`${!todaysDonation && "active"}`}
+        >
+          All donations
+        </span>
+      </div>
+      <div className="main">
+        <h2>AdminDashboard</h2>
+        <div className="view">
+          <h3>Pending Requests</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Donation Name</th>
+                <th>Donation Pickup Location</th>
+                <th>Special Note</th>
+                <th>Donation Date</th>
+                <th>Status</th>
+                <th>Assign To</th>
+              </tr>
+            </thead>
+            <tbody>
+              {donations &&
+                donations.map((item, index) => {
+                  return (
+                    !item["assigned"] && (
+                      <tr key={item.id}>
+                        <td>{index + 1}</td>
+                        <td>{item["donationName"]}</td>
+                        <td>{item["address"]}</td>
+                        <td>{item["specialNote"]}</td>
+                        <td>
+                          {new Date(
+                            item["createdAt"]?.["seconds"] * 1000
+                          ).toDateString()}
+                        </td>
+                        <td>{item["assigned"] ? "Approved" : "NA"}</td>
+                        <td>
+                          {" "}
+                          <select
+                            onChange={(e) =>
+                              onChangeHandler(item.id, e.target.value)
+                            }
+                          >
+                            {charities &&
+                              charities.map((charity) => {
+                                return <option>{charity["name"]}</option>;
+                              })}
+                          </select>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              updateStatusHandler(item.id);
+                            }}
+                          >
+                            Assign
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            onClick={() => {
+                              deleteHandler(item.id);
+                            }}
+                          >
+                            Reject Donation
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  );
+                })}
+            </tbody>
+          </table>
+
+          <h3>Accepted Requests</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Donation Name</th>
+                <th>Donation Pickup Location</th>
+                <th>Special Note</th>
+                <th>Donation Date</th>
+                <th>Assigned To</th>
+              </tr>
+            </thead>
+            <tbody>
+              {donations &&
+                donations.map((item, index) => {
+                  return (
+                    item["assigned"] && (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{item["donationName"]}</td>
+                        <td>{item["address"]}</td>
+                        <td>{item["specialNote"]}</td>
+                        <td>
+                          {new Date(
+                            item["createdAt"]?.["seconds"] * 1000
+                          ).toDateString()}
+                        </td>
+                        {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
+                        <td>{getCharityName(item["donatedTo"])}</td>
+                      </tr>
+                    )
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

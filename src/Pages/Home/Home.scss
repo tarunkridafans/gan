@@ -42,15 +42,35 @@
 
             .description {
                 padding: 20px 40px;
+                color: white;
+                border-radius: 5px;
+                font-size: 18px;
+                font-weight: 600;
+                height: 60px;
+                width: 60px;
+                display: flex;
+                place-items: center;
 
                 span {
                     cursor: pointer;
                 }
 
-                &:hover {
-                    background-color: #3ABCB2 !important;
-                    color: white !important;
-                }
+                // &:hover {
+                //     background-color: #3ABCB2 !important;
+                //     color: white !important;
+                // }
+            }
+
+            .first {
+                background-color: #0C2882;
+            }
+
+            .second {
+                background-color: #AD4442;
+            }
+
+            .third {
+                background-color: #DB925E;
             }
         }
     }
