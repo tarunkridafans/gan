@@ -24,7 +24,7 @@ function Header() {
       </div>
       <div className="lower-header">
         <h2>
-          <Link to="/">Waste No food</Link>
+          <Link to="/">Food Waste Management</Link>
         </h2>
         <ul>
           {/* <li>About Us</li> */}

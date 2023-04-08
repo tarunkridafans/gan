@@ -7,7 +7,7 @@ import {
   EmailAuthProvider,
 } from "firebase/auth";
 import { GrCircleInformation } from "react-icons/gr";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, orderBy } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
@@ -52,7 +52,8 @@ function FoodDonorsDashboard({ user }) {
     // const colRef = collection(db, "donations");
     const q = query(
       collection(db, "donations"),
-      where("donorUid", "==", user.uid)
+      where("donorUid", "==", user.uid),
+      orderBy("createdAt", "desc")
     );
     onSnapshot(q, (snapshot) => {
       let donations = [];
@@ -357,9 +358,12 @@ function FoodDonorsDashboard({ user }) {
                         <td>{item["specialNote"]}</td>
                         <td>{item["oldFood"]}</td>
                         <td>
-                          {new Date(
+                          {`${new Date(
                             item["createdAt"]?.["seconds"] * 1000
                           ).toDateString()}
+                         ${new Date(item["createdAt"]?.["seconds"] * 1000)
+                           .toLocaleTimeString()
+                           .slice(0, -3)}`}
                         </td>
                         <td className={`${item["assigned"] ? "green" : "red"}`}>
                           {item["assigned"] ? (

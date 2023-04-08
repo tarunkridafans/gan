@@ -8,6 +8,7 @@ import {
   doc,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -30,7 +31,8 @@ function AdminDashboard({ user }) {
 
   const fetchDonations = async () => {
     const colRef = collection(db, "donations");
-    onSnapshot(colRef, (snapshot) => {
+    const q = query(colRef, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
       let donations = [];
       snapshot.docs.forEach((doc) => {
         donations.push({ ...doc.data(), id: doc.id });
@@ -153,9 +155,12 @@ function AdminDashboard({ user }) {
                         <td>{item["address"]}</td>
                         <td>{item["specialNote"]}</td>
                         <td>
-                          {new Date(
+                          {`${new Date(
                             item["createdAt"]?.["seconds"] * 1000
                           ).toDateString()}
+                    ${new Date(item["createdAt"]?.["seconds"] * 1000)
+                      .toLocaleTimeString()
+                      .slice(0, -3)}`}
                         </td>
                         <td>{item["assigned"] ? "Approved" : "NA"}</td>
                         <td>
@@ -219,9 +224,12 @@ function AdminDashboard({ user }) {
                         <td>{item["address"]}</td>
                         <td>{item["specialNote"]}</td>
                         <td>
-                          {new Date(
+                          {`${new Date(
                             item["createdAt"]?.["seconds"] * 1000
                           ).toDateString()}
+                    ${new Date(item["createdAt"]?.["seconds"] * 1000)
+                      .toLocaleTimeString()
+                      .slice(0, -3)}`}
                         </td>
                         {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
                         <td>{getCharityName(item["donatedTo"])}</td>

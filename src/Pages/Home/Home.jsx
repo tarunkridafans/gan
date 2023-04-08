@@ -34,14 +34,12 @@ function Home() {
         <button onClick={donateFoodHandler}>Donate food</button>
       </section>
       <section className="how">
-        <h1>Waste food Management</h1>
+        <h1>Waste no food Management</h1>
         <div className="three-grid">
           <div>
             {/* <img /> */}
-            <div className="description first">
-              <span onClick={donorSignUpNavigation} className="heading">
-                Donor
-              </span>
+            <div onClick={donorSignUpNavigation} className="description first">
+              <span className="heading">Donor</span>
               {/* <p>
                 Farms, restaurants, cafeterias, hotels, stadiums, and grocery
                 stores post excess food in under a minute on the Waste No Food
@@ -51,10 +49,11 @@ function Home() {
           </div>
           <div>
             {/* <img /> */}
-            <div className="description second">
-              <span onClick={charitySignUpNavigation} className="heading">
-                Charity
-              </span>
+            <div
+              onClick={charitySignUpNavigation}
+              className="description second"
+            >
+              <span className="heading">Charity</span>
               {/* <p>
                 Pre-vetted charities immediately get notified about food
                 donations and can claim any donations they can use to serve
@@ -64,10 +63,8 @@ function Home() {
           </div>
           <div>
             {/* <img /> */}
-            <div className="description third">
-              <span onClick={adminSignInNavigation} className="heading">
-                Admin
-              </span>
+            <div onClick={adminSignInNavigation} className="description third">
+              <span className="heading">Admin</span>
               {/* <p>
                 The charity, or a network of volunteers, picks up the food and
                 serves it to hungry people.

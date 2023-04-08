@@ -8,6 +8,7 @@ import {
   onSnapshot,
   deleteDoc,
   updateDoc,
+  orderBy,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -28,7 +29,8 @@ function CharitiesDashboard({ user }) {
     // const colRef = collection(db, "donations");
     const q = query(
       collection(db, "donations"),
-      where("donatedTo", "==", user.uid)
+      where("donatedTo", "==", user.uid),
+      orderBy("createdAt", "desc")
     );
     onSnapshot(q, (snapshot) => {
       let donations = [];
@@ -63,9 +65,12 @@ function CharitiesDashboard({ user }) {
                   <td>{item["address"]}</td>
                   <td>{item["specialNote"]}</td>
                   <td>
-                    {new Date(
+                    {`${new Date(
                       item["createdAt"]?.["seconds"] * 1000
                     ).toDateString()}
+                    ${new Date(item["createdAt"]?.["seconds"] * 1000)
+                      .toLocaleTimeString()
+                      .slice(0, -3)}`}
                   </td>
                   <td>{item["assigned"] ? "Approved" : "NA"}</td>
                 </tr>
