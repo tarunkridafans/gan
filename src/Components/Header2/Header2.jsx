@@ -12,7 +12,7 @@ function Header2() {
     <div className="header2">
       <div className="left-header">
         <h3>
-          <Link to="/">Waste No food</Link>
+          <Link to="/">Food Waste Management</Link>
         </h3>
         <p>Diverting Excess food to hungry people</p>
       </div>

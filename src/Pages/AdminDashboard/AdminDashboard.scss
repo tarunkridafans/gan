@@ -8,7 +8,7 @@
     .side-nav {
         display: flex;
         flex-direction: column;
-        width: 15vw;
+        width: 15%;
         height: 100%;
         border-right: 1px solid #D0D0D0;
         padding-top: 10px;
@@ -43,6 +43,7 @@
     .main {
         padding: 0px 40px;
         height: 100%;
+        width: 85%;
     }
 
     table {

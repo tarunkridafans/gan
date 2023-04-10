@@ -1,3 +1,97 @@
+.charity-dash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100%;
+
+    .side-nav {
+        display: flex;
+        flex-direction: column;
+        width: 15%;
+        height: 100%;
+        border-right: 1px solid #D0D0D0;
+        padding-top: 10px;
+        margin-top: 12px;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        span {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #5C6975;
+            text-align: left;
+            padding: 12px 30px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: rgba(92, 105, 117, 0.13);
+            }
+        }
+
+        .active {
+            pointer-events: none;
+            color: black;
+            font-weight: 600;
+            background-color: rgba(251, 232, 240, 0.5);
+            cursor: pointer !important;
+        }
+    }
+
+    .main {
+        padding: 0px 40px;
+        height: 100%;
+        width: 85%;
+    }
+
+    .change-password {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        background-color: white;
+        padding: 30px 20px;
+        border-radius: 5px;
+        border: 1px solid black;
+        margin: 0 auto;
+        margin-top: 30px;
+
+        &>* {
+            margin: 0 10px;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+
+            span {
+                margin-bottom: 6px;
+                font-size: 16px;
+            }
+
+            input,
+            select {
+                padding: 6px;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+        }
+
+        button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+    }
+
+}
+
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
