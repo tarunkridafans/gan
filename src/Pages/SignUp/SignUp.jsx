@@ -46,6 +46,7 @@ function SignUp() {
         setDoc(doc(db, "users", cred.user.uid), {
           ...signupForm,
           role: localStorage.getItem("role"),
+          blocked: false,
         })
           .then((data) => {
             console.log("data", data);

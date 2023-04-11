@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState, useEffect, useRef } from "react";
+import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase-config";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { db } from "../../firebase-config";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 function Login() {
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [role, setRole] = useState("");
+  const user = useRef(null);
 
   const navigate = useNavigate();
 
@@ -28,21 +31,43 @@ function Login() {
     });
   };
 
+  const isValid = async (email) => {
+    const colRef = collection(db, "users");
+    const q = query(colRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      user.current = { ...doc.data(), id: doc.id };
+    });
+
+    await updateProfile(auth.currentUser, {
+      displayName: user.current?.["name"],
+      phoneNumber: user.current?.["phone"],
+    });
+    return user.current.role == role && !user.blocked;
+  };
+
   const loginHandler = () => {
-    // console.log(loginForm);
     signInWithEmailAndPassword(auth, loginForm.email, loginForm.password)
       .then((cred) => {
-        console.log(cred);
-        toast.success("Logged In Successully");
-        const role = localStorage.getItem("role");
-        console.log("role", role);
-        if (role == "donor") {
-          navigate("/foodDonorDashboard");
-        } else if (role == "charity") {
-          navigate("/charitiesDashboard");
-        } else {
-          navigate("/");
-        }
+        isValid(cred.user.email)
+          .then((flag) => {
+            if (!flag) {
+              toast.error("Invalid Credentials");
+              return;
+            }
+            toast.success("Logged In Successully");
+            const role = localStorage.getItem("role");
+            if (role == "donor") {
+              navigate("/foodDonorDashboard");
+            } else if (role == "charity") {
+              navigate("/charitiesDashboard");
+            } else {
+              navigate("/");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);

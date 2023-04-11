@@ -19,6 +19,8 @@ function AdminDashboard({ user }) {
   const [charities, setCharities] = useState();
   const [selectedCharity, setSelectedCharity] = useState(charities?.[0]);
   const [todaysDonation, setTodaysDonation] = useState(true);
+  const [showDonors, setShowDonors] = useState(false);
+  const [showCharities, setShowCharities] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -109,7 +111,20 @@ function AdminDashboard({ user }) {
 
   const allDonationsHandler = () => {
     setTodaysDonation(false);
+    setShowCharities(false);
+    setShowDonors(false);
     fetchDonations();
+  };
+
+  const showDonorsHandler = () => {
+    setTodaysDonation(false);
+    setShowCharities(false);
+    setShowDonors(true);
+  };
+  const showCharitiesHandler = () => {
+    setTodaysDonation(false);
+    setShowDonors(false);
+    setShowCharities(true);
   };
 
   return (
@@ -123,123 +138,144 @@ function AdminDashboard({ user }) {
         </span>
         <span
           onClick={allDonationsHandler}
-          className={`${!todaysDonation && "active"}`}
+          className={`${
+            !todaysDonation && !showCharities && !showDonors && "active"
+          }`}
         >
           All donations
         </span>
+        <span
+          onClick={showDonorsHandler}
+          className={`${showDonors && "active"}`}
+        >
+          Donor Management
+        </span>
+        <span
+          onClick={showCharitiesHandler}
+          className={`${showCharities && "active"}`}
+        >
+          Charities Management
+        </span>
       </div>
       <div className="main">
-        <h2>AdminDashboard</h2>
-        <div className="view">
-          <h3>Pending Requests</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Donation Name</th>
-                <th>Donation Pickup Location</th>
-                <th>Special Note</th>
-                <th>Donation Date</th>
-                <th>Status</th>
-                <th>Assign To</th>
-              </tr>
-            </thead>
-            <tbody>
-              {donations &&
-                donations.map((item, index) => {
-                  return (
-                    !item["assigned"] && (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td>{item["donationName"]}</td>
-                        <td>{item["address"]}</td>
-                        <td>{item["specialNote"]}</td>
-                        <td>
-                          {`${new Date(
-                            item["createdAt"]?.["seconds"] * 1000
-                          ).toDateString()}
+        {!showCharities && !showDonors && (
+          <>
+            <h2>AdminDashboard</h2>
+            <div className="view">
+              <h3>Pending Requests</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Donation Name</th>
+                    <th>Donation Pickup Location</th>
+                    <th>Special Note</th>
+                    <th>Donation Date</th>
+                    <th>Status</th>
+                    <th>Assign To</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donations &&
+                    donations.map((item, index) => {
+                      return (
+                        !item["assigned"] && (
+                          <tr key={item.id}>
+                            <td>{index + 1}</td>
+                            <td>{item["donationName"]}</td>
+                            <td>{item["address"]}</td>
+                            <td>{item["specialNote"]}</td>
+                            <td>
+                              {`${new Date(
+                                item["createdAt"]?.["seconds"] * 1000
+                              ).toDateString()}
                     ${new Date(item["createdAt"]?.["seconds"] * 1000)
                       .toLocaleTimeString()
                       .slice(0, -3)}`}
-                        </td>
-                        <td>{item["assigned"] ? "Approved" : "NA"}</td>
-                        <td>
-                          {" "}
-                          <select
-                            onChange={(e) =>
-                              onChangeHandler(item.id, e.target.value)
-                            }
-                          >
-                            {charities &&
-                              charities.map((charity) => {
-                                return <option>{charity["name"]}</option>;
-                              })}
-                          </select>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              updateStatusHandler(item.id);
-                            }}
-                          >
-                            Assign
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              deleteHandler(item.id);
-                            }}
-                          >
-                            Reject Donation
-                          </button>
-                        </td>
-                      </tr>
-                    )
-                  );
-                })}
-            </tbody>
-          </table>
+                            </td>
+                            <td>{item["assigned"] ? "Approved" : "NA"}</td>
+                            <td>
+                              {" "}
+                              <select
+                                onChange={(e) =>
+                                  onChangeHandler(item.id, e.target.value)
+                                }
+                              >
+                                {charities &&
+                                  charities.map((charity) => {
+                                    return <option>{charity["name"]}</option>;
+                                  })}
+                              </select>
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => {
+                                  updateStatusHandler(item.id);
+                                }}
+                              >
+                                Assign
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => {
+                                  deleteHandler(item.id);
+                                }}
+                              >
+                                Reject Donation
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                      );
+                    })}
+                </tbody>
+              </table>
 
-          <h3>Accepted Requests</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Donation Name</th>
-                <th>Donation Pickup Location</th>
-                <th>Special Note</th>
-                <th>Donation Date</th>
-                <th>Assigned To</th>
-              </tr>
-            </thead>
-            <tbody>
-              {donations &&
-                donations.map((item, index) => {
-                  return (
-                    item["assigned"] && (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{item["donationName"]}</td>
-                        <td>{item["address"]}</td>
-                        <td>{item["specialNote"]}</td>
-                        <td>
-                          {`${new Date(
-                            item["createdAt"]?.["seconds"] * 1000
-                          ).toDateString()}
+              <h3>Accepted Requests</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Donation Name</th>
+                    <th>Donation Pickup Location</th>
+                    <th>Special Note</th>
+                    <th>Donation Date</th>
+                    <th>Assigned To</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donations &&
+                    donations.map((item, index) => {
+                      return (
+                        item["assigned"] && (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{item["donationName"]}</td>
+                            <td>{item["address"]}</td>
+                            <td>{item["specialNote"]}</td>
+                            <td>
+                              {`${new Date(
+                                item["createdAt"]?.["seconds"] * 1000
+                              ).toDateString()}
                     ${new Date(item["createdAt"]?.["seconds"] * 1000)
                       .toLocaleTimeString()
                       .slice(0, -3)}`}
-                        </td>
-                        {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
-                        <td>{getCharityName(item["donatedTo"])}</td>
-                      </tr>
-                    )
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
+                            </td>
+                            {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
+                            <td>{getCharityName(item["donatedTo"])}</td>
+                          </tr>
+                        )
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+
+        {showDonors && <h1>Show Donors</h1>}
+        {showCharities && <h1>Show Charities</h1>}
       </div>
     </div>
   );

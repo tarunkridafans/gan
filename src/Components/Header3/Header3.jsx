@@ -12,6 +12,8 @@ function Header3({ user }) {
     }
   }, []);
 
+  console.log("user", user);
+
   const logOutHandler = async () => {
     try {
       await signOut(auth);
@@ -22,7 +24,9 @@ function Header3({ user }) {
   };
   return (
     <div className="header3">
-      <span className="user-name">{`Hi ${user?.email}`}</span>
+      <span className="user-name">{`Hi ${
+        user?.displayName ?? user?.email
+      }`}</span>
       <button onClick={logOutHandler}>Logout</button>
     </div>
   );
