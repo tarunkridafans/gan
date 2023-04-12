@@ -22,6 +22,8 @@ function AdminDashboard({ user }) {
   const [showDonors, setShowDonors] = useState(false);
   const [showCharities, setShowCharities] = useState(false);
 
+  const [allDonators, setAllDonators] = useState([]);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
@@ -51,6 +53,17 @@ function AdminDashboard({ user }) {
         charities.push({ ...doc.data(), id: doc.id });
       });
       setCharities(charities);
+    });
+  };
+
+  const fetchAllDonators = () => {
+    const q = query(collection(db, "users"), where("role", "==", "donor"));
+    onSnapshot(q, (snapshot) => {
+      let donators = [];
+      snapshot.docs.forEach((doc) => {
+        donators.push({ ...doc.data(), id: doc.id });
+      });
+      setAllDonators(donators);
     });
   };
 
@@ -117,6 +130,7 @@ function AdminDashboard({ user }) {
   };
 
   const showDonorsHandler = () => {
+    fetchAllDonators();
     setTodaysDonation(false);
     setShowCharities(false);
     setShowDonors(true);
@@ -125,6 +139,26 @@ function AdminDashboard({ user }) {
     setTodaysDonation(false);
     setShowDonors(false);
     setShowCharities(true);
+  };
+
+  const blockUserHandler = async (user) => {
+    const docRef = doc(db, "users", user.id);
+    try {
+      await updateDoc(docRef, { blocked: true });
+      toast.success(`${user.name} blocked`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const unBlockUserHandler = async (user) => {
+    const docRef = doc(db, "users", user.id);
+    try {
+      await updateDoc(docRef, { blocked: false });
+      toast.success(`${user.name} Unblocked`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -274,8 +308,90 @@ function AdminDashboard({ user }) {
           </>
         )}
 
-        {showDonors && <h1>Show Donors</h1>}
-        {showCharities && <h1>Show Charities</h1>}
+        {showDonors && (
+          <>
+            <h1>Donors Management</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Address</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allDonators.length > 0 &&
+                  allDonators.map((item, index) => {
+                    return (
+                      <tr key={item.id}>
+                        <td>{index + 1}</td>
+                        <td>{item["name"]}</td>
+                        <td>{item["email"]}</td>
+                        <td>{item["phone"]}</td>
+                        <td>{item["address"]}</td>
+                        <td>
+                          {item["blocked"] ? (
+                            <button onClick={() => unBlockUserHandler(item)}>
+                              Unblock
+                            </button>
+                          ) : (
+                            <button onClick={() => blockUserHandler(item)}>
+                              Block
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </>
+        )}
+        {showCharities && (
+          <>
+            <h1>Charities Management</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Address</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {charities.length > 0 &&
+                  charities.map((item, index) => {
+                    return (
+                      <tr key={item.id}>
+                        <td>{index + 1}</td>
+                        <td>{item["name"]}</td>
+                        <td>{item["email"]}</td>
+                        <td>{item["phone"]}</td>
+                        <td>{item["address"]}</td>
+                        <td>
+                          {item["blocked"] ? (
+                            <button onClick={() => unBlockUserHandler(item)}>
+                              Unblock
+                            </button>
+                          ) : (
+                            <button onClick={() => blockUserHandler(item)}>
+                              Block
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </>
+        )}
       </div>
     </div>
   );
