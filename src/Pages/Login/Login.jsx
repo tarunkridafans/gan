@@ -43,7 +43,8 @@ function Login() {
       displayName: user.current?.["name"],
       phoneNumber: user.current?.["phone"],
     });
-    return user.current.role == role && !user.blocked;
+
+    return user.current.role == role && !user.current.blocked;
   };
 
   const loginHandler = () => {
