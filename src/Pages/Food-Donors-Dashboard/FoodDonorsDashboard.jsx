@@ -213,18 +213,18 @@ function FoodDonorsDashboard({ user }) {
     <div className="donors-page">
       <div className="side-nav">
         <span
-          onClick={() => sideNavHandler(true)}
-          className={`${(donateNow || currentDonation) && "active"}`}
-        >
-          Donate Now
-        </span>
-        <span
           onClick={() => sideNavHandler(false)}
           className={`${
             !donateNow && !currentDonation && !showChangePassword && "active"
           }`}
         >
           Your donations
+        </span>
+        <span
+          onClick={() => sideNavHandler(true)}
+          className={`${(donateNow || currentDonation) && "active"}`}
+        >
+          Donate Now
         </span>
         <span
           onClick={() => changePasswordSideNavHandler(true)}

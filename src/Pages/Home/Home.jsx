@@ -49,6 +49,16 @@ function Home() {
           </div>
           <div>
             {/* <img /> */}
+            <div onClick={adminSignInNavigation} className="description third">
+              <span className="heading">Admin</span>
+              {/* <p>
+                The charity, or a network of volunteers, picks up the food and
+                serves it to hungry people.
+              </p> */}
+            </div>
+          </div>
+          <div>
+            {/* <img /> */}
             <div
               onClick={charitySignUpNavigation}
               className="description second"
@@ -58,16 +68,6 @@ function Home() {
                 Pre-vetted charities immediately get notified about food
                 donations and can claim any donations they can use to serve
                 hungry clients.
-              </p> */}
-            </div>
-          </div>
-          <div>
-            {/* <img /> */}
-            <div onClick={adminSignInNavigation} className="description third">
-              <span className="heading">Admin</span>
-              {/* <p>
-                The charity, or a network of volunteers, picks up the food and
-                serves it to hungry people.
               </p> */}
             </div>
           </div>

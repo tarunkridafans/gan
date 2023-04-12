@@ -46,7 +46,7 @@ function Footer() {
         </div>
       </div>
       <p className="copyright">
-        Copyright © 2011, Waste No Food. All rights reserved.
+        Copyright © 2021, Waste No Food. All rights reserved.
       </p>
     </div>
   );

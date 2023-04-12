@@ -18,7 +18,7 @@ function AdminDashboard({ user }) {
   const [donations, setDonations] = useState();
   const [charities, setCharities] = useState();
   const [selectedCharity, setSelectedCharity] = useState(charities?.[0]);
-  const [todaysDonation, setTodaysDonation] = useState(true);
+  const [todaysDonation, setTodaysDonation] = useState(false);
   const [showDonors, setShowDonors] = useState(false);
   const [showCharities, setShowCharities] = useState(false);
 
@@ -111,6 +111,8 @@ function AdminDashboard({ user }) {
 
   const todayDonationHandler = () => {
     setTodaysDonation(true);
+    setShowCharities(false);
+    setShowDonors(false);
     let todaysDate = new Date();
     setDonations((prev) => {
       return prev.filter((item) => {
@@ -165,18 +167,18 @@ function AdminDashboard({ user }) {
     <div className="admin-dash">
       <div className="side-nav">
         <span
-          onClick={todayDonationHandler}
-          className={`${todaysDonation && "active"}`}
-        >
-          Todays Donations
-        </span>
-        <span
           onClick={allDonationsHandler}
           className={`${
             !todaysDonation && !showCharities && !showDonors && "active"
           }`}
         >
           All donations
+        </span>
+        <span
+          onClick={todayDonationHandler}
+          className={`${todaysDonation && "active"}`}
+        >
+          Todays Donations
         </span>
         <span
           onClick={showDonorsHandler}
@@ -301,10 +303,21 @@ function AdminDashboard({ user }) {
                             {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
                             <td>{getCharityName(item["donatedTo"])}</td>
                             <td style={{ textAlign: "centre" }}>
-                              {item["donatedStatus"] ? "Donated" : "NA"}
+                              {item["donatedStatus"] ? (
+                                <span style={{ color: "green" }}> Donated</span>
+                              ) : (
+                                "NA"
+                              )}
                             </td>
                             <td style={{ textAlign: "centre" }}>
-                              {item["pickedUpStatus"] ? "Picked Up" : "NA"}
+                              {item["pickUpStatus"] ? (
+                                <span style={{ color: "green" }}>
+                                  {" "}
+                                  Picked Up
+                                </span>
+                              ) : (
+                                "NA"
+                              )}
                             </td>
                           </tr>
                         )

@@ -28,7 +28,7 @@ const changePasswordFormInitialData = {
 
 function CharitiesDashboard({ user }) {
   const [donations, setDonations] = useState();
-  const [todaysDonation, setTodaysDonation] = useState(true);
+  const [todaysDonation, setTodaysDonation] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [changePasswordForm, setChangePasswordForm] = useState(
     changePasswordFormInitialData
@@ -137,16 +137,16 @@ function CharitiesDashboard({ user }) {
     <div className="charity-dash">
       <div className="side-nav">
         <span
-          className={`${!showChangePassword && todaysDonation && "active"}`}
-          onClick={todayDonationHandler}
-        >
-          Todays Donations
-        </span>
-        <span
           className={`${!showChangePassword && !todaysDonation && "active"}`}
           onClick={allDonationsHandler}
         >
           All donations
+        </span>
+        <span
+          className={`${!showChangePassword && todaysDonation && "active"}`}
+          onClick={todayDonationHandler}
+        >
+          Todays Donations
         </span>
         <span
           onClick={() => changePasswordSideNavHandler(true)}
