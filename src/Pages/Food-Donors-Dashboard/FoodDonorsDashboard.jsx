@@ -11,7 +11,13 @@ import { doc, setDoc, getDoc, orderBy } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { serverTimestamp } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -192,6 +198,17 @@ function FoodDonorsDashboard({ user }) {
     console.log("user", docSnap.data());
   };
 
+  const donationUpdateHandler = async (donation) => {
+    console.log(donation);
+    const docRef = doc(db, "donations", donation.id);
+    try {
+      await updateDoc(docRef, { donatedStatus: true });
+      toast.success(`Updated Donated Status`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="donors-page">
       <div className="side-nav">
@@ -344,6 +361,7 @@ function FoodDonorsDashboard({ user }) {
                   <th>Food Condition</th>
                   <th>Donation Date</th>
                   <th>Status</th>
+                  <th>Donated Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -375,6 +393,16 @@ function FoodDonorsDashboard({ user }) {
                             </div>
                           ) : (
                             "Not yet Approved"
+                          )}
+                        </td>
+
+                        <td>
+                          {item["donatedStatus"] ? (
+                            <span style={{ color: "green" }}> Donated</span>
+                          ) : (
+                            <button onClick={() => donationUpdateHandler(item)}>
+                              Update{" "}
+                            </button>
                           )}
                         </td>
                       </tr>

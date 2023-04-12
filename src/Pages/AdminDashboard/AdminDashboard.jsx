@@ -276,6 +276,8 @@ function AdminDashboard({ user }) {
                     <th>Special Note</th>
                     <th>Donation Date</th>
                     <th>Assigned To</th>
+                    <th>Donor Donated Status</th>
+                    <th>Charity Pickup Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -298,6 +300,12 @@ function AdminDashboard({ user }) {
                             </td>
                             {/* <td>{item["assigned"] ? "Approved" : "NA"}</td> */}
                             <td>{getCharityName(item["donatedTo"])}</td>
+                            <td style={{ textAlign: "centre" }}>
+                              {item["donatedStatus"] ? "Donated" : "NA"}
+                            </td>
+                            <td style={{ textAlign: "centre" }}>
+                              {item["pickedUpStatus"] ? "Picked Up" : "NA"}
+                            </td>
                           </tr>
                         )
                       );

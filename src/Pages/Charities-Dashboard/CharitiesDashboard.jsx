@@ -6,9 +6,9 @@ import {
   query,
   where,
   onSnapshot,
-  deleteDoc,
   updateDoc,
   orderBy,
+  doc,
 } from "firebase/firestore";
 import { auth } from "../../firebase-config";
 import {
@@ -18,6 +18,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { async } from "@firebase/util";
 
 const changePasswordFormInitialData = {
   password: "",
@@ -121,6 +122,17 @@ function CharitiesDashboard({ user }) {
   const changePasswordSideNavHandler = () => {
     setShowChangePassword(true);
   };
+
+  const updatePickUpHandler = async (donation) => {
+    const docRef = doc(db, "donations", donation.id);
+    try {
+      await updateDoc(docRef, { pickUpStatus: true });
+      toast.success(`Updated Pickup Status`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="charity-dash">
       <div className="side-nav">
@@ -156,6 +168,7 @@ function CharitiesDashboard({ user }) {
                   <th>Special Note</th>
                   <th>Donation Date</th>
                   <th>Status</th>
+                  <th>Picked Up Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,6 +190,19 @@ function CharitiesDashboard({ user }) {
                       .slice(0, -3)}`}
                         </td>
                         <td>{item["assigned"] ? "Approved" : "NA"}</td>
+                        <td>
+                          {item["pickUpStatus"] ? (
+                            <span style={{ color: "green" }}>Picked Up</span>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                updatePickUpHandler(item);
+                              }}
+                            >
+                              Update
+                            </button>
+                          )}
+                        </td>
                       </tr>
                     );
                   })}
