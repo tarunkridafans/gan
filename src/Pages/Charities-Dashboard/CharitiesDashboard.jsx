@@ -18,8 +18,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { async } from "@firebase/util";
-
+import { BiEdit } from "react-icons/bi";
 const changePasswordFormInitialData = {
   password: "",
   newPassword: "",
@@ -33,6 +32,8 @@ function CharitiesDashboard({ user }) {
   const [changePasswordForm, setChangePasswordForm] = useState(
     changePasswordFormInitialData
   );
+  const [currentDonation, setCurrentDonation] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -133,6 +134,28 @@ function CharitiesDashboard({ user }) {
     }
   };
 
+  const editStatusHandler = (item) => {
+    console.log(item);
+    setCurrentDonation(item);
+    setShowModal(true);
+  };
+  const closeModalHandler = () => {
+    setShowModal(false);
+    setCurrentDonation(null);
+  };
+
+  const statusClickHandler = async (e) => {
+    const docRef = doc(db, "donations", currentDonation.id);
+    console.log(e.target.value);
+    try {
+      await updateDoc(docRef, { charityStatus: e.target.value });
+      toast.success(`Updated Pickup Status`);
+    } catch (err) {
+      console.error(err);
+    }
+    setShowModal(false);
+    setCurrentDonation(null);
+  };
   return (
     <div className="charity-dash">
       <div className="side-nav">
@@ -190,7 +213,7 @@ function CharitiesDashboard({ user }) {
                       .slice(0, -3)}`}
                         </td>
                         <td>{item["assigned"] ? "Approved" : "NA"}</td>
-                        <td>
+                        {/* <td>
                           {item["pickUpStatus"] ? (
                             <span style={{ color: "green" }}>Picked Up</span>
                           ) : (
@@ -201,6 +224,17 @@ function CharitiesDashboard({ user }) {
                             >
                               Update
                             </button>
+                          )}
+                        </td> */}
+                        <td style={{ display: "flex", alignItems: "center" }}>
+                          {item?.["charityStatus"]
+                            ? item?.["charityStatus"]
+                            : "Edit"}
+                          {item?.["charityStatus"] === "Donated" || (
+                            <BiEdit
+                              onClick={() => editStatusHandler(item)}
+                              style={{ cursor: "pointer", marginLeft: "5px" }}
+                            />
                           )}
                         </td>
                       </tr>
@@ -237,6 +271,22 @@ function CharitiesDashboard({ user }) {
               />
             </div>
             <button onClick={changePasswordHandler}> Change Password</button>
+          </div>
+        )}
+        {showModal && (
+          <div className="modal">
+            <button className="close" onClick={closeModalHandler}>
+              {" "}
+              Close
+            </button>
+            <div className="content">
+              <button value="Picked Up" onClick={statusClickHandler}>
+                Picked Up
+              </button>
+              <button value="Donated" onClick={statusClickHandler}>
+                Donated
+              </button>
+            </div>
           </div>
         )}
       </div>

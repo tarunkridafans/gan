@@ -89,6 +89,45 @@
 
     }
 
+    .close {
+        width: 50px;
+        align-self: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 30px;
+        border: 1px solid black;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        background-color: #DF2E38;
+        color: #fff;
+        font-weight: 600;
+
+        .close {
+            width: 50px;
+            align-self: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-around;
+
+            button {
+                padding: 5px 10px;
+                margin: 0 5px;
+                cursor: pointer;
+            }
+        }
+
+    }
+
 }
 
 

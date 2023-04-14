@@ -361,7 +361,8 @@ function FoodDonorsDashboard({ user }) {
                   <th>Food Condition</th>
                   <th>Donation Date</th>
                   <th>Status</th>
-                  <th>Donated Status</th>
+                  <th>Charity Status</th>
+                  {/* <th>Donated Status</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -396,7 +397,7 @@ function FoodDonorsDashboard({ user }) {
                           )}
                         </td>
 
-                        <td>
+                        {/* <td>
                           {item["donatedStatus"] ? (
                             <span style={{ color: "green" }}> Donated</span>
                           ) : (
@@ -404,6 +405,11 @@ function FoodDonorsDashboard({ user }) {
                               Update{" "}
                             </button>
                           )}
+                        </td> */}
+                        <td>
+                          {item?.["charityStatus"]
+                            ? item?.["charityStatus"]
+                            : "Pending"}
                         </td>
                       </tr>
                     );
