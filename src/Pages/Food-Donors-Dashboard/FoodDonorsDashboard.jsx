@@ -89,6 +89,7 @@ function FoodDonorsDashboard({ user }) {
       specialNote: donateForm["specialNote"],
       donorEmail: user.email,
       donorUid: user.uid,
+      donorName: user.displayName ?? "NA",
       assigned: false,
       createdAt: serverTimestamp(),
     };

@@ -204,6 +204,7 @@ function AdminDashboard({ user }) {
                   <tr>
                     <th>#</th>
                     <th>Donation Name</th>
+                    <th>Donor Name</th>
                     <th>Donation Pickup Location</th>
                     <th>Special Note</th>
                     <th>Donation Date</th>
@@ -219,6 +220,7 @@ function AdminDashboard({ user }) {
                           <tr key={item.id}>
                             <td>{index + 1}</td>
                             <td>{item["donationName"]}</td>
+                            <td>{item["donorName"]}</td>
                             <td>{item["address"]}</td>
                             <td>{item["specialNote"]}</td>
                             <td>
@@ -274,6 +276,7 @@ function AdminDashboard({ user }) {
                   <tr>
                     <th>#</th>
                     <th>Donation Name</th>
+                    <th>Donor Name</th>
                     <th>Donation Pickup Location</th>
                     <th>Special Note</th>
                     <th>Donation Date</th>
@@ -289,6 +292,7 @@ function AdminDashboard({ user }) {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{item["donationName"]}</td>
+                            <td>{item["donorName"]}</td>
                             <td>{item["address"]}</td>
                             <td>{item["specialNote"]}</td>
                             <td>

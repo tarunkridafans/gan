@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./CharitiesDashboard.scss";
 import { db } from "../../firebase-config";
 import {
@@ -9,6 +9,7 @@ import {
   updateDoc,
   orderBy,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { auth } from "../../firebase-config";
 import {
@@ -34,6 +35,7 @@ function CharitiesDashboard({ user }) {
   );
   const [currentDonation, setCurrentDonation] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const name = useRef();
 
   const navigate = useNavigate();
 
@@ -156,6 +158,26 @@ function CharitiesDashboard({ user }) {
     setShowModal(false);
     setCurrentDonation(null);
   };
+
+  const getDonorName = (id) => {
+    const docRef = doc(db, "users", id);
+    let n;
+    let name = (async () => {
+      const docSnap = await getDoc(docRef);
+      n = docSnap.data()?.name;
+      return docSnap.data()?.name;
+    })();
+    console.log("name outside", n, name);
+
+    let p = 5;
+    name.then((res) => {
+      p = res;
+      console.log(p, res);
+    });
+    console.log("outside", p);
+    return p;
+  };
+
   return (
     <div className="charity-dash">
       <div className="side-nav">
@@ -187,6 +209,7 @@ function CharitiesDashboard({ user }) {
                 <tr>
                   <th>#</th>
                   <th>Donation Name</th>
+                  <th>Donor Name</th>
                   <th>Donation Pickup Location</th>
                   <th>Special Note</th>
                   <th>Donation Date</th>
@@ -198,10 +221,12 @@ function CharitiesDashboard({ user }) {
                 {donations &&
                   donations.map((item, index) => {
                     // console.log("item", index, item);
+
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{item["donationName"]}</td>
+                        <td>{item["donorName"]}</td>
                         <td>{item["address"]}</td>
                         <td>{item["specialNote"]}</td>
                         <td>
